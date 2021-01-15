@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  zookeeper:
+    container_name: my-zookeeper
+    image: wurstmeister/zookeeper:3.4.6
+    hostname: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka:
+    container_name: my-kafka
+    image: wurstmeister/kafka:2.12-2.3.0
+    hostname: kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: 172.27.225.130
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_CREATE_TOPICS: "test-topic:1:1"
+
+  lb:
+    image: haproxy
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+
+  ws1:
+    image: wsapp
+    environment:
+      - APPID=ws1
+
+  ws2:
+    image: wsapp
+    environment:
+      - APPID=ws2
+
+  ws3:
+    image: wsapp
+    environment:
+      - APPID=ws3
+
+  ws4:
+    image: wsapp
+    environment:
+      - APPID=ws4
