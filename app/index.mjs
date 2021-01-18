@@ -24,7 +24,10 @@ const { Kafka } = kafkajs;
 
 const kafka = new Kafka({
   clientId: "my-wsapp",
-  brokers: ["kafka:9092"],
+  brokers: ["kafka1:9092", "kafka2:9093", "kafka3:9094"],
+  retry: {
+    retries: 20,
+  },
 });
 
 const producer = kafka.producer();

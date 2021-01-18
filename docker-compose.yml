@@ -10,8 +10,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
 
-  kafka:
-    container_name: my-kafka
+  kafka1:
+    container_name: my-kafka1
     image: wurstmeister/kafka:2.12-2.3.0
     hostname: kafka
     ports:
@@ -19,14 +19,48 @@ services:
     depends_on:
       - zookeeper
     environment:
+      KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_HOST_NAME: 172.27.225.130
+      KAFKA_ADVERTISED_HOST_NAME: 172.20.36.12
       KAFKA_ADVERTISED_PORT: 9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_CREATE_TOPICS: "test-topic:1:1"
 
+
+  kafka2:
+    container_name: my-kafka2
+    image: wurstmeister/kafka:2.12-2.3.0
+    hostname: kafka
+    ports:
+      - "9093:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: 172.20.36.12
+      KAFKA_ADVERTISED_PORT: 9093
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_CREATE_TOPICS: "test-topic:1:1"      
+
+  kafka3:
+    container_name: my-kafka3
+    image: wurstmeister/kafka:2.12-2.3.0
+    hostname: kafka
+    ports:
+      - "9094:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: 172.20.36.12
+      KAFKA_ADVERTISED_PORT: 9094
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_CREATE_TOPICS: "test-topic:1:1"           
+
   lb:
+    container_name: my-load-balancer
     image: haproxy
     ports:
       - "8080:8080"
@@ -34,21 +68,25 @@ services:
       - ./haproxy:/usr/local/etc/haproxy
 
   ws1:
+    container_name: my-wsapp1
     image: wsapp
     environment:
       - APPID=ws1
 
   ws2:
+    container_name: my-wsapp2
     image: wsapp
     environment:
       - APPID=ws2
 
   ws3:
+    container_name: my-wsapp3
     image: wsapp
     environment:
       - APPID=ws3
 
   ws4:
+    container_name: my-wsapp4
     image: wsapp
     environment:
       - APPID=ws4
