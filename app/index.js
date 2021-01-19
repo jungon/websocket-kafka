@@ -1,6 +1,8 @@
-import http from "http";
-import ws from "websocket";
-import kafkajs from "kafkajs";
+"use strict";
+
+const http = require("http");
+const ws = require("websocket");
+const { Kafka } = require("kafkajs");
 
 const APPID = process.env.APPID;
 
@@ -19,8 +21,6 @@ httpserver.listen(8080, () =>
 );
 
 const topic = "test-topic";
-
-const { Kafka } = kafkajs;
 
 const kafka = new Kafka({
   clientId: "my-wsapp",

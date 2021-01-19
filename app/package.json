@@ -2,9 +2,9 @@
   "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "main": "index.js",
   "scripts": {
-    "app": "node index.mjs"
+    "app": "node index.js"
   },
   "keywords": [],
   "author": "",
